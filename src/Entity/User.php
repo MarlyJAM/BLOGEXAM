@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -37,6 +39,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Article::class, orphanRemoval: true)]
+    private Collection $article;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rating::class, orphanRemoval: true)]
+    private Collection $rate;
+
+    public function __construct()
+    {
+        $this->article = new ArrayCollection();
+        $this->rate = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -159,6 +173,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticle(): Collection
+    {
+        return $this->article;
+    }
+
+    public function addArticle(Article $article): static
+    {
+        if (!$this->article->contains($article)) {
+            $this->article->add($article);
+            $article->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): static
+    {
+        if ($this->article->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getUserId() === $this) {
+                $article->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRate(): Collection
+    {
+        return $this->rate;
+    }
+
+    public function addRate(Rating $rate): static
+    {
+        if (!$this->rate->contains($rate)) {
+            $this->rate->add($rate);
+            $rate->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rating $rate): static
+    {
+        if ($this->rate->removeElement($rate)) {
+            // set the owning side to null (unless already changed)
+            if ($rate->getUserId() === $this) {
+                $rate->setUserId(null);
+            }
+        }
 
         return $this;
     }

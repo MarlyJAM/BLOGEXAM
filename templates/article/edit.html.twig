@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ArticleBlog{% endblock %}
+
+{% block body %}
+    {{ include('article_blog/_form.html.twig') }}
+    <a href="{{ path('app_articles') }}">back to list</a>
+
+    <script src="{{asset('js/image.js')}}" defer></script>
+
+{% endblock %}
+

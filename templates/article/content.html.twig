@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}contenu-article{% endblock %}
+
+{% block body %}
+    <section class="container-md">
+        <div class="container " >
+            <div class="grid grid-4 text-center my-4 ">
+                    <div class="card text-bg-light mb-3">
+                        <div class="card-img-top" >
+                            <img style="max-width: 500px;" class="card-img-bottom" src="{{ vich_uploader_asset(article, 'imageFile') }}">
+                        </div>
+                        <div class="card-header">
+                            {{article.name}}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{article.description}}</h5>
+                            <p class="card-text">{{article.content|raw }}</p>
+                            <p class="card-text"><i>Publié par</i> : {{ article.getUserId.email}} <i>le</i> : {{ article.getcreatedAt|date("d/m/Y H:i") }}</p>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+    </section><br><br> 
+    <section class="container-md">
+        <div class="card text-center">
+          <h4 class="card-title">Notes</h4>
+        </div><br><br> 
+
+        {% for rate in article.rate %}
+        <div class="container" >
+            <div class="grid grid-4 text-center my-4">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <h6 class="card-text">Publié par :{{ article.getUserId.email}}</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{answer.content|raw }}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            {% if rate.getUserId == app.user %}
+                            <button type="button" class="btn btn-outline-info"><a href="/{{rate.id}}/updateanswer" class="btn btn-light">{{ button_label|default('Mettre à jour') }}</a></button>
+                            <button type="button" class="btn btn-outline-danger"><a href="/{{rate.id}}/deleteanswer" class="btn btn-light">{{ button_label|default('Supprimer') }}</a></button>
+                            {% endif %}
+                        </div>
+                    </div><br><br>   
+            </div>
+        </div> 
+        {% endfor %}
+        <div>
+            {{ form_start(rating_form) }}
+                <div class="formulaire">
+                    {{ form_widget(rating_form) }}
+                </div>
+            {{ form_end(rating_form) }}
+        </div>
+    </section><br><br> 
+    
+    
+    
+{% endblock %}

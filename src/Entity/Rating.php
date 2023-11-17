@@ -13,43 +13,23 @@ class Rating
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $artice_id = null;
-
-    #[ORM\Column]
-    private ?int $user_id = null;
 
     #[ORM\Column]
     private ?int $rate = null;
+
+    #[ORM\ManyToOne(inversedBy: 'rate')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Article $article = null;
+
+    #[ORM\ManyToOne(inversedBy: 'rate')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getArticeId(): ?int
-    {
-        return $this->artice_id;
-    }
-
-    public function setArticeId(int $artice_id): static
-    {
-        $this->artice_id = $artice_id;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): static
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
 
     public function getRate(): ?int
     {
@@ -59,6 +39,30 @@ class Rating
     public function setRate(int $rate): static
     {
         $this->rate = $rate;
+
+        return $this;
+    }
+
+    public function getArticleId(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticleId(?Article $article): static
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUserId(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
