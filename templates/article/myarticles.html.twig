@@ -4,11 +4,11 @@
 
 {% block body %}
 <div class="container-md">
-<h2 id="Titre">Mes Articles</h2>
+<h2 id="Titre">Mes Articles</h2><br><br>
 <div  class="row row-cols-1 row-cols-md-3 g-4 d-flex align-content-around flex-wrap">
  {% for article in articles %}
   <div class="col">
-    <div class="card  h-100" >
+    <div class="card  h-auto" >
       {% if article.imageFile is empty  %}
       <img src="{{asset('imgblog/exemple.jpg')}}" class="card-img-top" alt="...">
       {% else %}
@@ -21,12 +21,12 @@
       </div>
       <div class="card-footer">
         <small class="text-muted">Mis à jour :{{ article.getUpdatedAt|date("d/m/Y H:i") }} </small>
-         <a href="{{ path('app_article_content', {'id': article.id}) }}">voir</a>
-        <a href="{{ path('app_article_delete', {'id': article.id}) }}">supprimer</a>
-        <a href="{{ path('app_article_edit', {'id': article.id}) }}">editer</a>
+         <a href="{{ path('app_article_content', {'id': article.getId}) }}">voir</a>
+        <a href="{{ path('app_article_delete', {'id': article.getId}) }}">supprimer</a>
+        <a href="{{ path('app_article_edit', {'id': article.getId}) }}">editer</a>
       </div>
     </div>
-  </div>
+  </div><br>
   {% endfor %}
 </div>
 </div>

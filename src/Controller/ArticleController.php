@@ -48,7 +48,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{id}/content/', name: 'app_article_content')]
-    public function showcontent(Request $request, Article $article,ArticleRepository $articleRepository,ManagerRegistry $doctrine,FlashyNotifier $flashy): Response
+    public function content(Request $request, Article $article,ArticleRepository $articleRepository,ManagerRegistry $doctrine,FlashyNotifier $flashy): Response
      {
         $rate = new Rating();
 
@@ -69,7 +69,7 @@ class ArticleController extends AbstractController
         }
 
 
-         return $this->render('article/content_article.html.twig',[
+         return $this->render('article/content.html.twig',[
             'article' =>$article,
             'rating_form' => $rating_form->createView()
         ]);
@@ -130,7 +130,7 @@ class ArticleController extends AbstractController
 
 
 
-    #[Route('/{id}', name: 'app_article_blog_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
     #[isGranted('ROLE_USER')]
     #[Security("is_granted('ROLE_USER') and user === article.getUserId()")]
     public function delete(Request $request, Article $article, ArticleRepository $articleRepository,FlashyNotifier $flashy): Response
